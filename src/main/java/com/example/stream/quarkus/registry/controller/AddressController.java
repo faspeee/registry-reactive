@@ -1,4 +1,13 @@
-package com.example.stream.spring.registry.people.reactive.example.controller;
+package com.example.stream.quarkus.registry.controller;
 
-public class AddressController {
+import com.example.stream.quarkus.registry.service.AddressService;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public final class AddressController {
+    private final AddressService addressService;
+
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
 }

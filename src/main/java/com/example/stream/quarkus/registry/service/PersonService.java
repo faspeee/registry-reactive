@@ -1,9 +1,8 @@
-package com.example.stream.spring.registry.people.reactive.example.service;
-
+package com.example.stream.quarkus.registry.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PersonService {
-  
+public final class PersonService {
+
 }

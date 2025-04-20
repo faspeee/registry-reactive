@@ -1,4 +1,4 @@
-package com.example.stream.spring.registry.people.reactive.example.entity;
+package com.example.stream.quarkus.registry.entity;
 
 
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class Address {
 
     @Column(name = "country")
     private String country;
-    
+
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;

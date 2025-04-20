@@ -1,4 +1,4 @@
-package com.example.stream.spring.registry.people.reactive.example.model.request;
+package com.example.stream.quarkus.registry.model.request;
 
-public class PersonRequestDto {
+public record PersonRequestDto() {
 }

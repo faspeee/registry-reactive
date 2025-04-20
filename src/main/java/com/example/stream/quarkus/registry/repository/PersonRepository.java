@@ -1,9 +1,11 @@
-package com.example.stream.spring.registry.people.reactive.example.repository;
+package com.example.stream.quarkus.registry.repository;
 
-import com.example.stream.spring.registry.people.reactive.example.entity.Person;
+import com.example.stream.quarkus.registry.entity.Person;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.UUID;
 
-public class PersonRepository implements PanacheRepositoryBase<Person, UUID> {
+@ApplicationScoped
+public final class PersonRepository implements PanacheRepositoryBase<Person, UUID> {
 }

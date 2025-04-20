@@ -1,4 +1,5 @@
-package com.example.stream.spring.registry.people.reactive.example.functional;
+package com.example.stream.quarkus.registry.functional;
+
 
 import java.util.Optional;
 import java.util.function.Function;

@@ -1,4 +1,4 @@
-package com.example.stream.spring.registry.people.reactive.example.entity;
+package com.example.stream.quarkus.registry.entity;
 
 
 import jakarta.persistence.Column;

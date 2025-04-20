@@ -1,4 +1,4 @@
-package com.example.stream.spring.registry.people.reactive.example.converter;
+package com.example.stream.quarkus.registry.converter;
 
 
 import java.util.Set;
