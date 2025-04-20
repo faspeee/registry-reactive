@@ -1,27 +1,30 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "criminal_records")
 public class CriminalRecord {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "crime_type")
-  private String crimeType;
+    @Column(name = "crime_type")
+    private String crimeType;
 
-  @Column(value = "crime_date")
-  private String crimeDate;
+    @Column(name = "crime_date")
+    private String crimeDate;
 
-  @Column(value = "punishment")
-  private String punishment;
+    @Column(name = "punishment")
+    private String punishment;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
-  // Getters and Setters
-  @Override
-  public String toString() {
-    return "CriminalRecord{id=" + id + ", crimeType='" + crimeType + "', crimeDate='" + crimeDate + "', punishment='" + punishment + "'}";
-  }
+    // Getters and Setters
+    @Override
+    public String toString() {
+        return "CriminalRecord{id=" + id + ", crimeType='" + crimeType + "', crimeDate='" + crimeDate + "', punishment='" + punishment + "'}";
+    }
 }
 

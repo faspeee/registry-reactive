@@ -1,28 +1,30 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "education")
 public class Education {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "degree")
-  private String degree;
+    @Column(name = "degree")
+    private String degree;
 
-  @Column(value = "university")
-  private String university;
+    @Column(name = "university")
+    private String university;
 
-  @Column(value = "graduation_year")
-  private String graduationYear;
+    @Column(name = "graduation_year")
+    private String graduationYear;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
-
-  @Override
-  public String toString() {
-    return "Education{id=" + id + ", degree='" + degree + "', university='" + university + "', graduationYear='" + graduationYear + "'}";
-  }
+    @Override
+    public String toString() {
+        return "Education{id=" + id + ", degree='" + degree + "', university='" + university + "', graduationYear='" + graduationYear + "'}";
+    }
 }

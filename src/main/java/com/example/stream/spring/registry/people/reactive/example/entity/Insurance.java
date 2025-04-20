@@ -1,26 +1,30 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "insurances")
 public class Insurance {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "insurance_type")
-  private String insuranceType;  // e.g., Health, Life, Vehicle
+    @Column(name = "insurance_type")
+    private String insuranceType;  // e.g., Health, Life, Vehicle
 
-  @Column(value = "policy_number")
-  private String policyNumber;
+    @Column(name = "policy_number")
+    private String policyNumber;
 
-  @Column(value = "coverage_amount")
-  private Double coverageAmount;
+    @Column(name = "coverage_amount")
+    private Double coverageAmount;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
-  // Getters and Setters
-  @Override
-  public String toString() {
-    return "Insurance{id=" + id + ", insuranceType='" + insuranceType + "', policyNumber='" + policyNumber + "', coverageAmount=" + coverageAmount + "}";
-  }
+    // Getters and Setters
+    @Override
+    public String toString() {
+        return "Insurance{id=" + id + ", insuranceType='" + insuranceType + "', policyNumber='" + policyNumber + "', coverageAmount=" + coverageAmount + "}";
+    }
 }

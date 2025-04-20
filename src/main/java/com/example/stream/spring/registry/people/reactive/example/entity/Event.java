@@ -1,25 +1,28 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "events")
 public class Event {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "event_type")
-  private String eventType; // e.g., Migration, Property Purchase
+    @Column(name = "event_type")
+    private String eventType; // e.g., Migration, Property Purchase
 
-  @Column(value = "event_date")
-  private String eventDate;
+    @Column(name = "event_date")
+    private String eventDate;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
-
-  @Override
-  public String toString() {
-    return "Event{id=" + id + ", eventType='" + eventType + "', eventDate='" + eventDate + "'}";
-  }
+    @Override
+    public String toString() {
+        return "Event{id=" + id + ", eventType='" + eventType + "', eventDate='" + eventDate + "'}";
+    }
 }

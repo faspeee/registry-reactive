@@ -1,31 +1,34 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+import java.util.UUID;
 
 @Table(name = "occupations")
 public class Occupation {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "job_title")
-  private String jobTitle;
+    @Column(name = "job_title")
+    private String jobTitle;
 
-  @Column(value = "employer")
-  private String employer;
+    @Column(name = "employer")
+    private String employer;
 
-  @Column(value = "start_date")
-  private String startDate;
+    @Column(name = "start_date")
+    private String startDate;
 
-  @Column(value = "end_date")
-  private String endDate;
+    @Column(name = "end_date")
+    private String endDate;
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  @Override
-  public String toString() {
-    return "Occupation{id=" + id + ", jobTitle='" + jobTitle + "', employer='" + employer + "', startDate='" + startDate + "', endDate='" + endDate + "'}";
-  }
+    @Override
+    public String toString() {
+        return "Occupation{id=" + id + ", jobTitle='" + jobTitle + "', employer='" + employer + "', startDate='" + startDate + "', endDate='" + endDate + "'}";
+    }
 }

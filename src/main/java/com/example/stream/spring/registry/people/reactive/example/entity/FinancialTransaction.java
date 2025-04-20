@@ -1,26 +1,30 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "financial_transactions")
 public class FinancialTransaction {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "transaction_type")
-  private String transactionType;  // e.g., Deposit, Withdrawal, Investment
+    @Column(name = "transaction_type")
+    private String transactionType;  // e.g., Deposit, Withdrawal, Investment
 
-  @Column(value = "transaction_date")
-  private String transactionDate;
+    @Column(name = "transaction_date")
+    private String transactionDate;
 
-  @Column(value = "amount")
-  private Double amount;
+    @Column(name = "amount")
+    private Double amount;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
-  // Getters and Setters
-  @Override
-  public String toString() {
-    return "FinancialTransaction{id=" + id + ", transactionType='" + transactionType + "', transactionDate='" + transactionDate + "', amount=" + amount + "}";
-  }
+    // Getters and Setters
+    @Override
+    public String toString() {
+        return "FinancialTransaction{id=" + id + ", transactionType='" + transactionType + "', transactionDate='" + transactionDate + "', amount=" + amount + "}";
+    }
 }

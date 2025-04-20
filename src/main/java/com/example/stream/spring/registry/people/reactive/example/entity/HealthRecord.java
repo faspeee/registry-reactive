@@ -1,31 +1,34 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "health_records")
 public class HealthRecord {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "health_condition")
-  private String healthCondition;
+    @Column(name = "health_condition")
+    private String healthCondition;
 
-  @Column(value = "medical_history")
-  private String medicalHistory;
+    @Column(name = "medical_history")
+    private String medicalHistory;
 
-  @Column(value = "insurance_provider")
-  private String insuranceProvider;
+    @Column(name = "insurance_provider")
+    private String insuranceProvider;
 
-  @Column(value = "policy_number")
-  private String policyNumber;
+    @Column(name = "policy_number")
+    private String policyNumber;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
-
-  @Override
-  public String toString() {
-    return "HealthRecord{id=" + id + ", healthCondition='" + healthCondition + "', medicalHistory='" + medicalHistory + "', insuranceProvider='" + insuranceProvider + "', policyNumber='" + policyNumber + "'}";
-  }
+    @Override
+    public String toString() {
+        return "HealthRecord{id=" + id + ", healthCondition='" + healthCondition + "', medicalHistory='" + medicalHistory + "', insuranceProvider='" + insuranceProvider + "', policyNumber='" + policyNumber + "'}";
+    }
 }

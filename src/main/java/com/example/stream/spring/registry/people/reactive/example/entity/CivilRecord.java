@@ -1,29 +1,33 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "civil_records")
 public class CivilRecord {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "record_type")
-  private String recordType;  // For example: Birth, Marriage, Death
+    @Column(name = "record_type")
+    private String recordType;  // For example: Birth, Marriage, Death
 
-  @Column(value = "record_date")
-  private String recordDate;
+    @Column(name = "record_date")
+    private String recordDate;
 
-  @Column(value = "registration_number")
-  private String registrationNumber;
+    @Column(name = "registration_number")
+    private String registrationNumber;
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  @Override
-  public String toString() {
-    return "CivilRecord{id=" + id + ", recordType='" + recordType + "', recordDate='" + recordDate + "', registrationNumber='" + registrationNumber + "'}";
-  }
+    @Override
+    public String toString() {
+        return "CivilRecord{id=" + id + ", recordType='" + recordType + "', recordDate='" + recordDate + "', registrationNumber='" + registrationNumber + "'}";
+    }
 }
 

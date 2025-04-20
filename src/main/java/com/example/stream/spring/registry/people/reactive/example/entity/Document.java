@@ -1,31 +1,34 @@
 package com.example.stream.spring.registry.people.reactive.example.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Table(name = "documents")
 public class Document {
-  @Id
-  private Long id;
+    @Id
+    private UUID id;
 
-  @Column(value = "document_type")
-  private String documentType; // e.g., ID card, Passport, Diploma
+    @Column(name = "document_type")
+    private String documentType; // e.g., ID card, Passport, Diploma
 
-  @Column(value = "document_number")
-  private String documentNumber;
+    @Column(name = "document_number")
+    private String documentNumber;
 
-  @Column(value = "issue_date")
-  private String issueDate;
+    @Column(name = "issue_date")
+    private String issueDate;
 
-  @Column(value = "expiry_date")
-  private String expiryDate;
+    @Column(name = "expiry_date")
+    private String expiryDate;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+    // Getters and Setters
+    // (Include getters and setters for each new field)
 
-  // Getters and Setters
-  // (Include getters and setters for each new field)
-
-  @Override
-  public String toString() {
-    return "Document{id=" + id + ", documentType='" + documentType + "', documentNumber='" + documentNumber + "', issueDate='" + issueDate + "', expiryDate='" + expiryDate + "'}";
-  }
+    @Override
+    public String toString() {
+        return "Document{id=" + id + ", documentType='" + documentType + "', documentNumber='" + documentNumber + "', issueDate='" + issueDate + "', expiryDate='" + expiryDate + "'}";
+    }
 }
