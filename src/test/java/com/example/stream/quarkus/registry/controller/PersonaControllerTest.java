@@ -51,8 +51,8 @@ class PersonaControllerTest {
                 .body(personaRequestDto)
                 .post("/person/createPerson")
                 .then()
-                .statusCode(500)
-                .body("message", equalTo("Invalid UUID string: 1232"));
+                .statusCode(400)
+                .body("violations[0].message", equalTo("must be a past date"));
     }
 
     @Test
