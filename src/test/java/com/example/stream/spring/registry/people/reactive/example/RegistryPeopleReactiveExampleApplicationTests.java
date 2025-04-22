@@ -1,9 +1,9 @@
 package com.example.stream.spring.registry.people.reactive.example;
 
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@QuarkusTest
 class RegistryPeopleReactiveExampleApplicationTests {
 
   @Test
