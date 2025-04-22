@@ -45,11 +45,26 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
 
     Optional<R> getRight();
 
-    <T> Either<L, T> map(Function<? super R, ? extends T> mapper);
+    default <T> Either<L, T> map(Function<? super R, ? extends T> mapper) {
+        return switch (this) {
+            case Right<L, R>(R value) -> right(mapper.apply(value));
+            case Left<L, R>(L value) -> left(value);
+        };
+    }
 
-    <T> Either<L, T> flatMap(Function<? super R, ? extends Either<L, T>> mapper);
+    default <T> Either<L, T> flatMap(Function<? super R, ? extends Either<L, T>> mapper) {
+        return switch (this) {
+            case Right<L, R>(R value) -> mapper.apply(value);
+            case Left<L, R>(L value) -> left(value);
+        };
+    }
 
-    <T> T fold(Function<? super L, T> leftMapper, Function<? super R, T> rightMapper);
+    default <T> T fold(Function<? super L, T> leftMapper, Function<? super R, T> rightMapper) {
+        return switch (this) {
+            case Right<L, R>(R value) -> rightMapper.apply(value);
+            case Left<L, R>(L value) -> leftMapper.apply(value);
+        };
+    }
 
     /**
      * Represents the Left value of an Either, typically used to hold an error or failure.
@@ -77,21 +92,6 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
         @Override
         public Optional<R> getRight() {
             return Optional.empty();
-        }
-
-        @Override
-        public <T> Either<L, T> map(Function<? super R, ? extends T> mapper) {
-            return new Left<>(value);
-        }
-
-        @Override
-        public <T> Either<L, T> flatMap(Function<? super R, ? extends Either<L, T>> mapper) {
-            return new Left<>(value);
-        }
-
-        @Override
-        public <T> T fold(Function<? super L, T> leftMapper, Function<? super R, T> rightMapper) {
-            return leftMapper.apply(value);
         }
     }
 
@@ -121,21 +121,6 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
         @Override
         public Optional<R> getRight() {
             return Optional.of(value);
-        }
-
-        @Override
-        public <T> Either<L, T> map(Function<? super R, ? extends T> mapper) {
-            return new Right<>(mapper.apply(value));
-        }
-
-        @Override
-        public <T> Either<L, T> flatMap(Function<? super R, ? extends Either<L, T>> mapper) {
-            return mapper.apply(value);
-        }
-
-        @Override
-        public <T> T fold(Function<? super L, T> leftMapper, Function<? super R, T> rightMapper) {
-            return rightMapper.apply(value);
         }
     }
 

@@ -2,12 +2,21 @@ package com.example.stream.quarkus.registry.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
+@Entity
 @Table(name = "addresses")
+@Getter
+@Setter
 public class Address {
     @Id
+    @GeneratedValue
+    @UuidGenerator
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "street_address")
@@ -21,7 +30,8 @@ public class Address {
 
     @Column(name = "country")
     private String country;
-
+    @Column(name = "state")
+    private String state;
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
