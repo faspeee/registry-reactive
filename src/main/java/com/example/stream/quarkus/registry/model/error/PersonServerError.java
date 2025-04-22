@@ -1,4 +1,9 @@
 package com.example.stream.quarkus.registry.model.error;
 
-public record PersonServerError() implements PersonError {
+import java.time.LocalDateTime;
+
+public record PersonServerError(String message, LocalDateTime timeStamp, String classHappen) implements PersonError {
+    public PersonServerError(String message, String classHappen) {
+        this(message, LocalDateTime.now(), classHappen);
+    }
 }

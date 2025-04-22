@@ -1,4 +1,7 @@
-package com.example.stream.spring.registry.people.reactive.example.controller;
+package com.example.stream.quarkus.registry.controller;
 
-public class PersonController {
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public final class PersonController {
 }

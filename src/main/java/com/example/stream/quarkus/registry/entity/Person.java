@@ -1,15 +1,23 @@
-package com.example.stream.spring.registry.people.reactive.example.entity;
+package com.example.stream.quarkus.registry.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
 @Table(name = "persons")
+@Getter
+@Setter
 public class Person {
     @Id
+    @GeneratedValue
+    @UuidGenerator
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "first_name")
@@ -19,7 +27,7 @@ public class Person {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "gender")
     private String gender;

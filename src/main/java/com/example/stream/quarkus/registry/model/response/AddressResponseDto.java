@@ -1,4 +1,5 @@
-package com.example.stream.spring.registry.people.reactive.example.model.response;
+package com.example.stream.quarkus.registry.model.response;
 
-public class AddressResponseDto {
+public record AddressResponseDto(String streetId, String personId, String streetAddress, String city, String state,
+                                 String country, String zipCode) {
 }

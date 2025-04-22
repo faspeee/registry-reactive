@@ -1,12 +1,12 @@
-package com.example.stream.spring.registry.people.reactive.example.converter;
+package com.example.stream.quarkus.registry.converter;
 
-import com.example.stream.spring.registry.people.reactive.example.entity.Person;
-import com.example.stream.spring.registry.people.reactive.example.model.request.PersonRequestDto;
-import com.example.stream.spring.registry.people.reactive.example.model.response.PersonResponseDto;
+import com.example.stream.quarkus.registry.entity.Person;
+import com.example.stream.quarkus.registry.model.request.PersonRequestDto;
+import com.example.stream.quarkus.registry.model.response.PersonResponseDto;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PersonConverter implements Converter<PersonRequestDto, PersonResponseDto, Person> {
+public final class PersonConverter implements Converter<PersonRequestDto, PersonResponseDto, Person> {
 
     @Override
     public PersonResponseDto toDto(Person entity) {

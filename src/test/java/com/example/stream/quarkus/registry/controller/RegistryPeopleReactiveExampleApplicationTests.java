@@ -1,4 +1,4 @@
-package com.example.stream.spring.registry.people.reactive.example;
+package com.example.stream.quarkus.registry.controller;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 class RegistryPeopleReactiveExampleApplicationTests {
 
-  @Test
-  void contextLoads() {
-  }
+    @Test
+    void contextLoads() {
+    }
 
 }
