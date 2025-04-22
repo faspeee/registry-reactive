@@ -15,9 +15,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Supplier;
 
-import static com.example.stream.quarkus.registry.utility.UtilMunity.createUniWithError;
+import static com.example.stream.quarkus.registry.utility.UtilMunity.*;
 
 @ApplicationScoped
 public final class AddressService {
@@ -29,14 +28,6 @@ public final class AddressService {
         this.addressRepository = addressRepository;
         this.addressConverter = addressConverter;
         this.personService = personService;
-    }
-
-    private static <T> Uni<T> startUniFromItem(T item) {
-        return Uni.createFrom().item(item);
-    }
-
-    private static <T> Multi<T> startUni(Supplier<Multi<? extends T>> supplier) {
-        return Multi.createFrom().deferred(supplier);
     }
 
     public Multi<Set<AddressResponseDto>> getAllAddress() {

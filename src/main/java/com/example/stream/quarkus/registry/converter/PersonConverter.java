@@ -10,11 +10,16 @@ public final class PersonConverter implements Converter<PersonRequestDto, Person
 
     @Override
     public PersonResponseDto toDto(Person entity) {
-        return null;
+        return new PersonResponseDto(entity.getId().toString(), entity.getFirstName(), entity.getLastName(), entity.getDateOfBirth(), entity.getGender());
     }
 
     @Override
     public Person toEntity(PersonRequestDto dto) {
-        return null;
+        Person entity = new Person();
+        entity.setFirstName(dto.firstName());
+        entity.setLastName(dto.lastName());
+        entity.setDateOfBirth(dto.birthday());
+        entity.setGender(dto.gender());
+        return entity;
     }
 }
