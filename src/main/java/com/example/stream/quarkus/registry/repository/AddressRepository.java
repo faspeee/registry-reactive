@@ -10,6 +10,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -17,13 +18,16 @@ public final class AddressRepository implements PanacheRepositoryBase<Address, U
 
     private static Uni<Either<Error, Address>> processResponse(Uni<Address> address) {
         return address
-                .<Either<Error, Address>>map(Either::right)
-                .replaceIfNullWith(Either.left(new AddressNotFound(AddressRepository.class.getName())))
+                .<Either<Error, Address>>map(val -> val != null ? Either.right(val) : Either.left(new AddressNotFound(AddressRepository.class.getName())))
                 .onFailure()
-                .recoverWithItem(tr -> {
-                    System.out.println(tr);
-                    return Either.left(new AddressServerError(tr.getMessage(), AddressRepository.class.getName()));
-                });
+                .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressRepository.class.getName())));
+    }
+
+    private static Uni<Either<Error, Boolean>> addressExistResponse(Uni<Boolean> address) {
+        return address
+                .<Either<Error, Boolean>>map(aBoolean -> Boolean.TRUE.equals(aBoolean) ? Either.right(true) : Either.left(new AddressNotFound(AddressRepository.class.getName())))
+                .onFailure()
+                .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressRepository.class.getName())));
     }
 
     @WithTransaction
@@ -34,6 +38,12 @@ public final class AddressRepository implements PanacheRepositoryBase<Address, U
     @WithTransaction
     public Uni<Either<Error, Address>> getAddressById(UUID addressId) {
         return processResponse(findById(addressId));
+    }
+
+    @WithTransaction
+    public Uni<Either<Error, Boolean>> existById(UUID addressId) {
+        return addressExistResponse(findById(addressId).map(Objects::nonNull)
+                .replaceIfNullWith(false));
     }
 
     @WithTransaction

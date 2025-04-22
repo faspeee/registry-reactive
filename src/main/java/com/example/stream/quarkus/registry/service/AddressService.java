@@ -17,14 +17,18 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import static com.example.stream.quarkus.registry.utility.UtilMunity.createUniWithError;
+
 @ApplicationScoped
 public final class AddressService {
     private final AddressRepository addressRepository;
     private final AddressConverter addressConverter;
+    private final PersonService personService;
 
-    public AddressService(AddressRepository addressRepository, AddressConverter addressConverter) {
+    public AddressService(AddressRepository addressRepository, AddressConverter addressConverter, PersonService personService) {
         this.addressRepository = addressRepository;
         this.addressConverter = addressConverter;
+        this.personService = personService;
     }
 
     private static <T> Uni<T> startUniFromItem(T item) {
@@ -60,8 +64,11 @@ public final class AddressService {
 
     public Uni<Either<Error, AddressResponseDto>> createAddress(AddressRequestDto addressRequestDto) {
         return startUniFromItem(addressRequestDto)
-                .flatMap(addressInsideUni -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressInsideUni))
-                        .map(either -> either.map(addressConverter::toDto)))
+                .flatMap(addressInsideUni -> personService.existPersonById(addressInsideUni.personId())
+                        .flatMap(either -> either.getRight()
+                                .map(ignored -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressInsideUni))
+                                        .map(innerEither -> innerEither.map(addressConverter::toDto)))
+                                .orElse(createUniWithError(either))))
                 .onFailure()
                 .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressService.class.getName())));
     }
@@ -69,8 +76,13 @@ public final class AddressService {
     public Uni<Either<Error, AddressResponseDto>> updateAddress(String addressId, AddressRequestDto addressRequestDto) {
         return startUniFromItem(addressId)
                 .map(UUID::fromString) // This is now inside the chain
-                .flatMap(addressUUID -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressRequestDto)))
-                .map(either -> either.map(addressConverter::toDto));
+                .flatMap(addressRepository::existById)
+                .flatMap(response -> response.getRight()
+                        .map(ignored -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressRequestDto)))
+                        .orElse(createUniWithError(response)))
+                .map(either -> either.map(addressConverter::toDto))
+                .onFailure()
+                .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressService.class.getName())));
     }
 
     public Uni<Either<Error, Success>> deleteAddress(String addressId) {
