@@ -4,10 +4,13 @@ import com.example.stream.quarkus.registry.converter.PersonConverter;
 import com.example.stream.quarkus.registry.entity.Person;
 import com.example.stream.quarkus.registry.functional.Either;
 import com.example.stream.quarkus.registry.model.error.Error;
-import com.example.stream.quarkus.registry.model.error.*;
+import com.example.stream.quarkus.registry.model.error.PersonIsPresent;
+import com.example.stream.quarkus.registry.model.error.PersonServerError;
+import com.example.stream.quarkus.registry.model.error.Success;
 import com.example.stream.quarkus.registry.model.request.PersonRequestDto;
 import com.example.stream.quarkus.registry.model.response.PersonResponseDto;
 import com.example.stream.quarkus.registry.repository.PersonRepository;
+import com.example.stream.quarkus.registry.utility.UtilMunity;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,7 +19,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.stream.quarkus.registry.utility.UtilMunity.*;
+import static com.example.stream.quarkus.registry.utility.UtilMunity.startUni;
+import static com.example.stream.quarkus.registry.utility.UtilMunity.startUniFromItem;
 
 /**
  * {@code PersonService} provides business logic for managing {@link Person} entities.
@@ -56,9 +60,8 @@ public final class PersonService {
         return startUniFromItem(personId)
                 .map(UUID::fromString)
                 .flatMap(personRepository::existById)
-                .map(either -> either.getRight()
-                        .<Either<Error, Success>>map(aBoolean -> Either.right(new PersonIsPresent()))
-                        .orElse(Either.left(either.getLeft().orElse(new GenericError()))));
+                .map(either -> either.fold(Either::left,
+                        success -> Either.right(new PersonIsPresent())));
     }
 
     /**
@@ -111,9 +114,8 @@ public final class PersonService {
         return startUniFromItem(personId)
                 .map(UUID::fromString)
                 .flatMap(personRepository::existById)
-                .flatMap(response -> response.getRight()
-                        .map(ignored -> personRepository.createOrUpdatePerson(personConverter.toEntity(personRequestDto)))
-                        .orElse(createUniWithError(response)))
+                .flatMap(response -> response.fold(error -> UtilMunity.<Boolean, Person>createUniWithError(response),
+                        success -> personRepository.createOrUpdatePerson(personConverter.toEntity(personRequestDto))))
                 .map(either -> either.map(personConverter::toDto))
                 .onFailure()
                 .recoverWithItem(throwable -> Either.left(new PersonServerError(throwable.getMessage(), PersonService.class.getName())));

@@ -9,6 +9,7 @@ import com.example.stream.quarkus.registry.model.error.Success;
 import com.example.stream.quarkus.registry.model.request.AddressRequestDto;
 import com.example.stream.quarkus.registry.model.response.AddressResponseDto;
 import com.example.stream.quarkus.registry.repository.AddressRepository;
+import com.example.stream.quarkus.registry.utility.UtilMunity;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -17,7 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.stream.quarkus.registry.utility.UtilMunity.*;
+import static com.example.stream.quarkus.registry.utility.UtilMunity.startUni;
+import static com.example.stream.quarkus.registry.utility.UtilMunity.startUniFromItem;
 
 /**
  * {@code AddressService} provides business logic for managing {@link Address} entities
@@ -94,12 +96,10 @@ public final class AddressService {
      */
     public Uni<Either<Error, AddressResponseDto>> createAddress(AddressRequestDto addressRequestDto) {
         return startUniFromItem(addressRequestDto)
-                .flatMap(addressInsideUni ->
-                        personService.existPersonById(addressInsideUni.personId())
-                                .flatMap(either -> either.getRight()
-                                        .map(ignored -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressInsideUni))
-                                                .map(innerEither -> innerEither.map(addressConverter::toDto)))
-                                        .orElse(createUniWithError(either))))
+                .flatMap(addressInsideUni -> personService.existPersonById(addressInsideUni.personId())
+                        .flatMap(either -> either.fold(error -> UtilMunity.<Success, AddressResponseDto>createUniWithError(either),
+                                success -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressInsideUni))
+                                        .map(innerEither -> innerEither.map(addressConverter::toDto)))))
                 .onFailure()
                 .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressService.class.getName())));
     }
@@ -115,9 +115,8 @@ public final class AddressService {
         return startUniFromItem(addressId)
                 .map(UUID::fromString)
                 .flatMap(addressRepository::existById)
-                .flatMap(response -> response.getRight()
-                        .map(ignored -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressRequestDto)))
-                        .orElse(createUniWithError(response)))
+                .flatMap(response -> response.fold(error -> UtilMunity.<Boolean, Address>createUniWithError(response),
+                        success -> addressRepository.createOrUpdateAddress(addressConverter.toEntity(addressRequestDto))))
                 .map(either -> either.map(addressConverter::toDto))
                 .onFailure()
                 .recoverWithItem(throwable -> Either.left(new AddressServerError(throwable.getMessage(), AddressService.class.getName())));
