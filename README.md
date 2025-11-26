@@ -30,6 +30,10 @@ mvn clean install
 ./mvnw quarkus:dev
 ```
 
+# Quarkus + Testcontainers + Docker
+
+To work with docker, is only necessary that docker engine is running, by default Testcontainers use docker engine.
+
 # Quarkus + Testcontainers + Podman Setup on macOS
 
 This README explains how to run a Quarkus application using Testcontainers while using Podman instead of Docker on macOS.
