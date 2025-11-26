@@ -5,14 +5,14 @@ This repository contains a reactive-based application to manage a people registr
 ## Features
 
 - **Reactive People Registry**: A system to manage and query people data reactively.
-- **Spring WebFlux**: Used for reactive HTTP handling.
+- **Quarkus**: Used for reactive HTTP handling.
 - **MongoDB Integration**: Stores people data in a NoSQL database.
 - **Real-time Data Handling**: Optimized for high concurrency and asynchronous requests.
 
 ## Technologies Used
 
-- **Spring Boot** for backend services 
-- **WebFlux** for reactive programming
+- **Quarkus** for backend services 
+- **Mutiny** for reactive programming
 - **H2** for database management
 - **Maven** for project management
 
