@@ -35,8 +35,22 @@ mvn clean install
 To work with docker, is only necessary that docker engine is running, by default Testcontainers use docker engine.
 
 # Quarkus + Testcontainers + Podman Setup on macOS
-
 This README explains how to run a Quarkus application using Testcontainers while using Podman instead of Docker on macOS.
+
+### Control podman socket
+if you want, you can enter inside the podman machine and check if podman socket is active, to make it, you can run the next command.
+```shell
+podman machine ssh
+```
+inside the podman machine you can run the next command:
+```shell
+systemctl status podman.socket
+```
+
+If status is disabled, you can run the next command to activate the podman socket, after run this command you can try again the previous command to verify the status.
+```shell
+sudo systemctl enable --now podman.socket
+```
 
 ---
 
