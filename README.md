@@ -6,14 +6,14 @@ This repository contains a reactive-based application to manage a people registr
 
 - **Reactive People Registry**: A system to manage and query people data reactively.
 - **Quarkus**: Used for reactive HTTP handling.
-- **MongoDB Integration**: Stores people data in a NoSQL database.
+- **Postgresql Integration**: Stores people data in a NoSQL database.
 - **Real-time Data Handling**: Optimized for high concurrency and asynchronous requests.
 
 ## Technologies Used
 
 - **Quarkus** for backend services 
 - **Mutiny** for reactive programming
-- **H2** for database management
+- **Postgresql** for database management
 - **Maven** for project management
 
 ## Setup
@@ -25,7 +25,86 @@ This repository contains a reactive-based application to manage a people registr
 cd registry-reactive
 mvn clean install
 ## Run Application
-mvn spring-boot:run
+
+```bash
+./mvnw quarkus:dev
+```
+
+# Quarkus + Testcontainers + Podman Setup on macOS
+
+This README explains how to run a Quarkus application using Testcontainers while using Podman instead of Docker on macOS.
+
+---
+
+## 1. Configure Testcontainers
+
+Create the global Testcontainers configuration file:
+
+```bash
+nano ~/.testcontainers.properties
+```
+
+Set the Docker host using your Podman machine’s socket. To find the correct path, run:
+
+```bash
+podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}'
+```
+
+Then, in the `~/.testcontainers.properties` file, add:
+
+```properties
+docker.host=unix:///path/to/podman.sock
+```
+
+> Replace `/path/to/podman.sock` with the actual path returned by the `podman machine inspect` command.
+
+---
+
+## 2. Override the Docker socket for Testcontainers
+
+Run the following command in your terminal:
+
+```bash
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+```
+
+This ensures Testcontainers can communicate with Podman’s socket.
+
+---
+
+## 3. Start Quarkus
+
+Once the configuration is done, you can run your Quarkus application:
+
+```bash
+./mvnw quarkus:dev
+```
+
+All commands above are executed in the macOS terminal.
+
+---
+
+> ⚠️ **Note:** This setup is specific to macOS and assumes you are using Podman with a Podman machine. Other operating systems may require different configuration.
+
+---
+
+## Optional: Skip Tests and DevServices
+
+If you want to skip running tests (and avoid Testcontainers starting containers automatically), run Quarkus with:
+
+```bash
+./mvnw quarkus:dev -DskipTests
+```
+
+Or disable DevServices in `application.properties`:
+
+```properties
+quarkus.datasource.devservices.enabled=false
+```
+
+This is useful when running Quarkus locally with Podman and avoiding potential container startup issues.
+
+
 ## Contributing
 
 1. Fork the repository.
