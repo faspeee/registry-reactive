@@ -81,5 +81,4 @@ public final class AddressController {
         return processEmptyResponse(addressService.deleteAddress(addressId));
     }
 
-
 }

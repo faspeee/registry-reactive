@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<develocity
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.gradle.com/develocity-maven"
+        xsi:schemaLocation="https://www.gradle.com/develocity-maven https://www.gradle.com/schema/develocity-maven.xsd">
+
+    <server>
+        <url>https://scans.gradle.com</url>
+    </server>
+
+    <buildScan>
+        <termsOfUse>
+            <url>https://gradle.com/help/legal-terms-of-use</url>
+            <accept>true</accept>
+        </termsOfUse>
+        <publishing>
+            <onlyIf>true</onlyIf>
+        </publishing>
+    </buildScan>
+
+</develocity>

@@ -3,7 +3,7 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <include file="liquibase/sql/schema.sql"/>
-    <include file="liquibase/sql/person.sql"/>
-    <include file="liquibase/sql/address.sql"/>
+    <include file="/liquibase/sql/schema.sql"/>
+    <include file="/liquibase/sql/person.sql"/>
+    <include file="/liquibase/sql/address.sql"/>
 </databaseChangeLog>
